@@ -22,7 +22,7 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{ba619590-099c-4fa4-878e-0686211e1ad6}</ProjectGuid>
-    <RootNamespace>SYSKEY</RootNamespace>
+    <RootNamespace>CMD</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>CMD</ProjectName>
   </PropertyGroup>

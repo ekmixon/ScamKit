@@ -11,8 +11,8 @@
 #define NQUERY_KEYS		4
 
 typedef struct _WinVerInfo {
-	unsigned char majorVer[16];
-	unsigned char minorVer[16];
+	DWORD majorVer;
+	DWORD minorVer;
 	unsigned char currentBuild[16];
 	DWORD UBR;
 } WinVerInfo;
@@ -30,56 +30,83 @@ int ReadVersionInfo(WinVerInfo *wvInfo) {
 	};
 
 	LSTATUS nResult = RegOpenKeyExA(HKEY_LOCAL_MACHINE, sPath, 0, KEY_READ | KEY_WOW64_64KEY, &hKey);
-
+	
+	DWORD regsz = REG_SZ;
+	DWORD regdw = REG_DWORD;
 	if (nResult != EXIT_SUCCESS) { return EXIT_FAILURE; }
 
 	for (int i = 0; i < NQUERY_KEYS; i++) {
 		switch (i) {
 		
 		case IDVERSION_MAJOR:
-			nResult = RegQueryValueExA(hKey, sKeys[IDVERSION_MAJOR], NULL, NULL, (LPBYTE) wvInfo->majorVer, &readSize);
+			nResult = RegQueryValueExA(hKey, sKeys[IDVERSION_MAJOR], NULL, &regdw, (LPBYTE) &wvInfo->majorVer, &readSize);
 			break;
 		
 		case IDVERSION_MINOR:
-			nResult = RegQueryValueExA(hKey, sKeys[IDVERSION_MINOR], NULL, NULL, (LPBYTE) wvInfo->minorVer, &readSize);
+			nResult = RegQueryValueExA(hKey, sKeys[IDVERSION_MINOR], NULL, &regdw, (LPBYTE) &wvInfo->minorVer, &readSize);
 			break;
 
 		case IDVERSION_BUILD:
-			nResult = RegQueryValueExA(hKey, sKeys[IDVERSION_BUILD], NULL, NULL, (LPBYTE) wvInfo->currentBuild, &readSize);
+			nResult = RegQueryValueExA(hKey, sKeys[IDVERSION_BUILD], NULL, &regsz, (LPBYTE)& wvInfo->currentBuild, &readSize);
 			break;
 
 		case IDVERSION_UBR:
-			nResult = RegQueryValueExA(hKey, sKeys[IDVERSION_UBR], NULL, NULL, (LPBYTE) wvInfo->UBR, &readSize);
+			nResult = RegQueryValueExA(hKey, sKeys[IDVERSION_UBR], NULL, &regdw, (LPBYTE) &wvInfo->UBR, &readSize);
 			break;
 
 		default:
 			break;
 		}
 
-		if (nResult != EXIT_SUCCESS) { 
+		if (nResult != ERROR_SUCCESS) {
 			RegCloseKey(hKey);
 			return EXIT_FAILURE;
 		}
+		readSize = 0xf;
 	}
-	
+
 	RegCloseKey(hKey);
 	return EXIT_SUCCESS;
 }
 
 int main(void) {
-	WinVerInfo wvInfo;
-
-
-	ReadVersionInfo(&wvInfo);
-
-	printf("%s.%s.%s.%lu\n", wvInfo.majorVer, wvInfo.minorVer, wvInfo.currentBuild, wvInfo.UBR);
-
-
 	/* Get Windows Version */
+	WinVerInfo wvInfo;
+	
+	/* Get Username */
+	DWORD wunamelen = 64;
+	unsigned char wusername[64];
+	
+	if (ReadVersionInfo(&wvInfo) == EXIT_SUCCESS && GetUserNameA(wusername, &wunamelen) == EXIT_SUCCESS) {
+		char tmp[64] = { 0 };
+		strncpy(tmp, wusername, 63);
+		snprintf(wusername, 63, "C:\\Users\\%s> ", tmp);
+		printf("Microsoft Windows [Version %lu.%lu.%s.%lu]\n(c) Microsoft Corporation. All rights reserved.\n\nC:\\Users\\%s", wvInfo.majorVer, wvInfo.minorVer, wvInfo.currentBuild, wvInfo.UBR, wusername);
+		fflush(stdout);
+	}
+	else {
+		printf("Microsoft Windows [Version 10.0.19041.1052\n(c) Microsoft Corporation. All rights reserved.\n\nC:\\Users\\homepc> ");
+		strncpy(wusername, "C:\\Users\\homepc> ", 63);
+		fflush(stdout);
+	}
+
+	unsigned char inputBuffer[256];
+	while (1) {
+		memset(inputBuffer, 0, 256);
+		fgets(inputBuffer, 255, stdin);
+
+		char* nlptr = strrchr(inputBuffer, '\n');
+		if (nlptr != NULL) { *nlptr = 0; }
+
+		if (strncmp(inputBuffer, "exit", 255) == 0) { break; }
+		printf("'%s' is not recognized as an internal or external command,\noperable program or batch file.\n\n%s", inputBuffer, wusername);
+		fflush(stdout);
+	}
+
+
 	//while (1) {
 
 	//}
-
 
 	return EXIT_SUCCESS;
 }
