@@ -3,11 +3,11 @@ Out of nowhere, I started receiving tech support scam calls, I'm talking like 5 
 So I've decided to fuck with them a wee bit.
 
 ## ScamKit
-ScamKit contains:
-Fake `cmd.exe` - All commands yield `'%s' is not recognized as an internal or external command, operable program or batch file.`
-Fake `NETSTAT.exe` - Prints `No active connections - System is secure`
-Fake `tree.com` - Prints `System is secure`
-Fake 'syskey.exe` - Fake SYSKEY (SAM Lock Tool) GUI. Nothing is locked. Instead, the encryption password is copied to clipboard after being set.
+ScamKit contains:  
+Fake `cmd.exe` - All commands yield `'%s' is not recognized as an internal or external command, operable program or batch file.`  
+Fake `NETSTAT.exe` - Prints `No active connections - System is secure`  
+Fake `tree.com` - Prints `System is secure`  
+Fake `syskey.exe` - Fake SYSKEY (SAM Lock Tool) GUI. Nothing is locked. Instead, the encryption password is copied to clipboard after being set.  
 
 ## PowerShell Scripts
 `Perms_GRANT.ps1` - Removes `TrustedInstaller` from original executables, so they can be replaced with fake ones.
@@ -33,6 +33,7 @@ As this also messes up with `System32`, I am NOT responsible for any damage done
 
 Please just use this inside a VM.
 
-
+## DEMO
+[YouTube DEMO](https://www.youtube.com/watch?v=IvT0WidP7h4)
 
 ski ski ski píčo Alberto Tomba
