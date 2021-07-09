@@ -13,6 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntiScamGUI", "..\AntiScamG
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CMD", "CMD\CMD.vcxproj", "{3B6CCC2E-2BC6-4C67-8C39-8EF7555FD2D3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{38310303-BB2C-4682-B554-0A2FC0C11A5C}"
+	ProjectSection(SolutionItems) = preProject
+		x64\Release\PERMS\Perms_GRANT.ps1 = x64\Release\PERMS\Perms_GRANT.ps1
+		x64\Release\PERMS\Perms_REVOKE.ps1 = x64\Release\PERMS\Perms_REVOKE.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -77,15 +77,15 @@ int main(void) {
 	DWORD wunamelen = 64;
 	unsigned char wusername[64];
 	
-	if (ReadVersionInfo(&wvInfo) == EXIT_SUCCESS && GetUserNameA(wusername, &wunamelen) == EXIT_SUCCESS) {
+	if (ReadVersionInfo(&wvInfo) == EXIT_SUCCESS && GetUserNameA(wusername, &wunamelen) == TRUE) {
 		char tmp[64] = { 0 };
 		strncpy(tmp, wusername, 63);
 		snprintf(wusername, 63, "C:\\Users\\%s> ", tmp);
-		printf("Microsoft Windows [Version %lu.%lu.%s.%lu]\n(c) Microsoft Corporation. All rights reserved.\n\nC:\\Users\\%s", wvInfo.majorVer, wvInfo.minorVer, wvInfo.currentBuild, wvInfo.UBR, wusername);
+		printf("Microsoft Windows [Version %lu.%lu.%s.%lu]\n(c) Microsoft Corporation. All rights reserved.\n\n%s", wvInfo.majorVer, wvInfo.minorVer, wvInfo.currentBuild, wvInfo.UBR, wusername);
 		fflush(stdout);
 	}
 	else {
-		printf("Microsoft Windows [Version 10.0.19041.1052\n(c) Microsoft Corporation. All rights reserved.\n\nC:\\Users\\homepc> ");
+		printf("Microsoft Windows [Version 10.0.19041.1052]\n(c) Microsoft Corporation. All rights reserved.\n\nC:\\Users\\homepc> ");
 		strncpy(wusername, "C:\\Users\\homepc> ", 63);
 		fflush(stdout);
 	}
